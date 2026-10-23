@@ -23,6 +23,7 @@ import Y_V8_Y___W_B32QEUK from './devices/Y_V8_Y___W.B32QEUK'
 import Y_VB_Y___W_B32QEUK from './devices/Y_VB_Y___W.B32QEUK'
 import F_V8_Y___W_B_2QEUK from './devices/F_V8_Y___W.B_2QEUK'
 import Y_V8_F___W_B_2QEUK from './devices/Y_V8_F___W.B_2QEUK'
+import V_V__F___W_B_2QEUK from './devices/V_V__F___W.B_2QEUK'
 import F_V__F___W_B_1QEUK from './devices/F_V__F___W.B_1QEUK'
 import F_C__Y___W_A__QEUK from './devices/F_C__Y___W.A__QEUK'
 import F_VB_F___W_B_2QEUK from './devices/F_VB_F___W.B_2QEUK'
@@ -83,6 +84,7 @@ const t2deviceTypes: Record<string, T2Factory> = {
     'Y_V8_Y___W.B32QEUK': Y_V8_Y___W_B32QEUK,
     'F_V8_Y___W.B_2QEUK': F_V8_Y___W_B_2QEUK,
     'Y_V8_F___W.B_2QEUK': Y_V8_F___W_B_2QEUK,
+    'V_V__F___W.B_2QEUK': V_V__F___W_B_2QEUK, // LG washer/dryer combo, Y_V8_Y___W.B32QEUK's state record with its own dial
     VCDWL2QEUK, // LG F4X7511TWS front-load washer (matched on modelId VCDWL2QEUK)
     'F_V__F___W.B_1QEUK': F_V__F___W_B_1QEUK,
     'F_C__Y___W.A__QEUK': F_C__Y___W_A__QEUK,
