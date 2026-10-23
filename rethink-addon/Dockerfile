@@ -1,7 +1,7 @@
 # The Supervisor's build context is only this folder, so the source is cloned
 # rather than copied. Pinned to a commit so a rebuild gives the same image.
 ARG RETHINK_REPO=https://github.com/Chrisrkilv/rethink
-ARG RETHINK_REF=19ee44f284ef4f27b2ddff274f7ae032d0bfe8c7
+ARG RETHINK_REF=169b7858a55e02329f42e3fd4b9b7350d3a3f443
 
 # Build stage
 FROM alpine:3.20 AS build
