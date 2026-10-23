@@ -1,0 +1,94 @@
+# Add-on identity
+name: Rethink
+version: '0.1.2-house1'
+slug: rethink
+description: Cloud-free support for LG ThinQ appliances.
+url: https://github.com/anszom/rethink
+arch:
+    - aarch64
+    - amd64
+    - armv7
+
+# Built locally by the Supervisor from the Dockerfile next to this file
+init: true
+
+# Selects add-on mode in rethink-cloud - it configures itself from the Supervisor
+# options file rather than a configuration file, and keeps the CA and the bridge
+# state in the mapped directory below.
+environment:
+    RETHINK_HASSIO_OPTIONS: /data/options.json
+    RETHINK_DATA_DIR: /app/data
+
+# Startup / lifecycle
+startup: application
+boot: auto
+
+# Supervisor API & services
+hassio_api: true
+services:
+    - mqtt:want
+
+# Ingress web UI panel
+ingress: true
+ingress_port: 44401
+panel_icon: mdi:home-automation
+panel_title: Rethink
+
+# Device-facing ports. Appliances connect to the Home Assistant host on these
+# ports once you redirect the ThinQ DNS names to the host (see docs). The
+# appliances insist on the standard ports, so if something else on the host
+# already holds them, remap the host side here and set https_advertise /
+# mqtts_advertise to whatever the appliances will actually reach.
+ports:
+    443/tcp: 8443
+    8883/tcp: 18883
+    46030/tcp: null
+    47878/tcp: null
+
+# User-configurable options & their defaults
+options:
+    hostname: rethink.lan
+    discovery_prefix: homeassistant
+    rethink_prefix: rethink
+    mqtt_url: ''
+    mqtt_user: ''
+    mqtt_pass: ''
+    https_advertise: ''
+    mqtts_advertise: ''
+    custom_root_cert_file: ''
+    config_file: ''
+    bridge_dns:
+        - https://1.1.1.1/dns-query
+        - https://8.8.8.8/dns-query
+    log:
+        - status
+        - incoming
+        - HTTPS
+        - publish
+        - MGMT
+
+# Validation schema for the options above. Their names and descriptions are in
+# translations/en.yaml, which is what the configuration panel renders.
+schema:
+    hostname: str
+    discovery_prefix: str
+    rethink_prefix: str
+    mqtt_url: str?
+    mqtt_user: str?
+    mqtt_pass: password?
+    https_advertise: str?
+    mqtts_advertise: str?
+    custom_root_cert_file: str?
+    config_file: str?
+    bridge_dns:
+        - str?
+    # Free-form rather than a fixed list: device drivers add topics of their own,
+    # and the set would go stale here.
+    log:
+        - str
+
+# Persistent storage
+map:
+    - type: addon_config
+      read_only: false
+      path: /app/data

@@ -1,0 +1,83 @@
+network:
+    443/tcp: >-
+        ThinQ2 HTTPS. If you modify this value, you will need to redirect devices' connections to this
+        port somehow. Refer to the app documentation for details.
+    8883/tcp: >-
+        ThinQ2 MQTTS. If you modify this value, you will need to redirect devices' connections to this
+        port somehow. Refer to the app documentation for details.
+    46030/tcp: >-
+        ThinQ1 HTTPS. If you modify this value, you will need to redirect devices' connections to this
+        port somehow. Refer to the app documentation for details.
+    47878/tcp: >-
+        ThinQ1 device connection. If you modify this value, you will need to redirect devices'
+        connections to this port somehow. Refer to the app documentation for details.
+
+configuration:
+    hostname:
+        name: Appliance-facing hostname
+        description: >-
+            The DNS name you redirect the LG ThinQ servers to. Must be a name, not an IP address, and
+            must resolve by DNS to this Home Assistant host from the appliances' point of view.
+
+            NOTE: hostname.local will usually resolve via mDNS which is not supported by ThinQ appliances.
+
+    discovery_prefix:
+        name: Discovery prefix
+        description: >-
+            MQTT topic prefix Home Assistant listens on for discovery. Change this only if you changed
+            it in the MQTT integration too.
+    rethink_prefix:
+        name: Rethink topic prefix
+        description: MQTT topic prefix Rethink publishes appliance state under.
+    mqtt_url:
+        name: MQTT broker URL
+        description: >-
+            Leave empty to use the broker Home Assistant itself uses, discovered through the Supervisor.
+            Set it, for example mqtt://192.168.1.10:1883, only when your broker is not managed by Home
+            Assistant.
+    mqtt_user:
+        name: MQTT username
+        description: Only needed alongside a custom broker URL.
+    mqtt_pass:
+        name: MQTT password
+        description: Only needed alongside a custom broker URL.
+    https_advertise:
+        name: Advertised HTTPS port or URL
+        description: >-
+            What Rethink tells the appliances to connect to for HTTPS, when that is not the port it binds.
+            Either a port number, or a full URL if you terminate TLS in a reverse proxy, for example
+            https://rethink.lan:443. Leave empty when port 443 is mapped straight through.
+
+            NOTE: many appliances will refuse to connect to a non-443 port!
+    mqtts_advertise:
+        name: Advertised MQTTS port or URL
+        description: >-
+            The same for MQTTS. Either a port number, or a full URL, for example ssl://rethink.lan:8883.
+            Leave empty when port 8883 is mapped straight through.
+
+            NOTE: many appliances will refuse to connect to a non-8883 port!
+    custom_root_cert_file:
+        name: Custom root certificate
+        description: >-
+            Path to a PEM root certificate, relative to the app configuration directory, handed to the
+            appliances during provisioning in place of Rethink's own CA. Only needed behind a TLS reverse
+            proxy whose certificate does not chain to Rethink's CA. Appliances keep the certificate they
+            were given, so changing this does not affect already-paired ones.
+    config_file:
+        name: Custom configuration file
+        description: >-
+            Path to a hand-written configuration file, relative to the app configuration directory.
+            When set, every option above is ignored. Rethink writes config.jsonc.example next to it on
+            every start, rendered from the current options, to copy and edit.
+    bridge_dns:
+        name: Bridge DNS servers
+        description: >-
+            DNS servers the cloud bridge uses to find the real LG ThinQ servers, bypassing the redirect
+            that points the appliances at Rethink. Tried in order; each is a DNS-over-HTTPS URL or a
+            plain DNS server address. Leave empty to use the system resolver, for example when the
+            redirect does not apply to this Home Assistant host.
+    log:
+        name: Log topics
+        description: >-
+            Which topics to print to the app log. Use "all" for everything. The documentation lists
+            the topics in use; device drivers may add their own.
