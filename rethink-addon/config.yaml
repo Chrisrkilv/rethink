@@ -1,6 +1,6 @@
 # Add-on identity
 name: Rethink
-version: '0.1.2-house1'
+version: '0.1.3-house2'
 slug: rethink
 description: Cloud-free support for LG ThinQ appliances.
 url: https://github.com/anszom/rethink
