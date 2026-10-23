@@ -35,9 +35,9 @@ export const COURSES = Enum.of({
 // modelJson's dryLevel, limited to the codes seen from the panel so far
 export const DRY_LEVELS = Enum.of({ 'Not selected': 0, Normal: 0x02, Low: 0x0b })
 
-// The inherited entities seen working on this model. Left out until a capture confirms them: energy
-// (no LG figure to check it against yet), the option flags (all stayed clear) and the programme
-// controls (no programme command has been sent to this model from rethink).
+// The inherited entities seen working on this model. Left out until a capture confirms them: the
+// option flags (all stayed clear) and the programme controls (no programme command has been sent to
+// this model from rethink).
 const CONFIRMED = [
     'power',
     'start',
@@ -52,6 +52,7 @@ const CONFIRMED = [
     'rinse',
     'soil',
     'cycles',
+    'energy',
     'remote_start',
     'door_lock',
     'child_lock',
@@ -65,10 +66,11 @@ const CONFIRMED = [
 //   Drying (9) and Cooling (11) need the cloud's state to read RUNNING, RINSING, DRYING and COOLDOWN
 //   while s[2] shows those codes. Delayed (3) needs a wash started with a delayed end, and
 //   Measuring (4) the DETECTING state at the start of a wash.
-// - energy: s[30..31] climbed from 0 to 10 through a Rinse + Spin run and held at End, the same
-//   behaviour as the V8's counter. Publish it once a heated wash and a drying run each climb through
-//   the whole cycle, reset at the next start, and land within 2% of LG's figure for the cycle where
-//   the app shows one.
+// - energy: s[30..31] climbed from 0 to 10 through a spin run, held at End and Off, and went back to
+//   0 when the washer was next switched on, the same behaviour as the V8's counter, so it is
+//   published with the V8's unit (Wh). The LG cloud's notifications carry no energy figure, so the
+//   unit is still to confirm: one cycle's total within 2% of LG's figure for it, ideally from a
+//   heated wash and a drying run.
 // - error: only 0 (ERROR_NO) has been seen. The table is modelJson's, which matches ERRORS; one real
 //   error code read against the cloud's error field would confirm the byte.
 // - options: turboWash, steam, preWash, medicRinse, steamSoftener, creaseCare, wrinkleCare and
