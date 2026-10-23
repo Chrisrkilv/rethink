@@ -242,6 +242,28 @@ describe(MODEL_ID, () => {
         assert.equal(props.power, 'OFF')
     })
 
+    test('energy is exposed as the V8 exposes it', () => {
+        const { ha } = makeDevice()
+        const components = ha.devices[DEVICE_ID].config!.components as Record<string, Record<string, unknown>>
+        assert.equal(components.energy.platform, 'sensor')
+        assert.equal(components.energy.device_class, 'energy')
+        assert.equal(components.energy.state_class, 'total_increasing')
+        assert.equal(components.energy.unit_of_measurement, 'Wh')
+    })
+
+    test('energy climbs through a run and holds at End and Off', () => {
+        const { ha, thinq } = makeDevice()
+
+        thinq.emit('data', SAMPLE_SPINNING)
+        assert.equal(ha.getProperty(DEVICE_ID, 'energy', 'state'), 0)
+
+        thinq.emit('data', SAMPLE_END)
+        assert.equal(ha.getProperty(DEVICE_ID, 'energy', 'state'), 10)
+
+        thinq.emit('data', SAMPLE_POWER_OFF)
+        assert.equal(ha.getProperty(DEVICE_ID, 'energy', 'state'), 10)
+    })
+
     test('paused', () => {
         const { ha, thinq } = makeDevice()
         thinq.emit('data', SAMPLE_PAUSED)
